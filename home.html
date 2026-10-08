@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BestWash</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html, body {
+        margin: 0;
+        height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      body {
+        background: #d9d9d9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mx-auto min-h-screen max-w-[1440px] bg-[#1bb0ef]">
+      <header class="flex items-center justify-between px-8 py-5 text-white md:px-10 lg:px-14">
+        <div class="text-[2.1rem] font-black leading-none">BestWash</div>
+
+        <nav class="hidden items-center gap-10 text-base font-semibold md:flex">
+          <a href="#" class="text-white">Home</a>
+          <a href="#" class="text-white">Services</a>
+          <a href="#" class="text-white">Price</a>
+          <a href="#" class="text-white">Contact Us</a>
+        </nav>
+
+        <button class="rounded-full bg-[#0f0f0f] px-5 py-3 text-xl font-bold leading-none shadow-md">
+          Log-in
+        </button>
+      </header>
+
+      <main class="relative h-[calc(100vh-92px)] overflow-hidden">
+        <div class="relative z-10 ml-8 pt-14 text-white md:ml-12 lg:ml-16">
+          <h1 class="max-w-[600px] text-[3.3rem] font-black leading-[1.08] tracking-[-0.04em] text-[#dff8ff]">
+            Serahkan Urusan Cucian pada<br />
+            Sistem Kami, Nikmati Hari Anda<br />
+            dengan Pakaian Bersih dan<br />
+            Wangi.
+          </h1>
+        </div>
+
+        <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-0 h-[180px]">
+          <svg viewBox="0 0 1440 200" class="h-full w-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,160 C170,120 280,120 430,140 C590,165 720,200 900,180 C1120,156 1280,105 1440,120 L1440,200 L0,200 Z" fill="#bfe9e7"/>
+          </svg>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
