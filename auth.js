@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     verifyBtn.addEventListener("click", async () => {
       const token = otpInput.value.trim();
 
-      if (token.length !== 6) {
+      if (token.length !== 8) {
         otpError.textContent = "Kode harus 6 digit angka.";
         otpError.classList.remove("hidden");
         return;
