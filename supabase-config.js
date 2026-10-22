@@ -8,7 +8,7 @@
 // =====================================================================
 
 // ---- ISI DUA BARIS INI dari Supabase: Project Settings -> API ----
-const SUPABASE_URL = "sb_publishable_GqyX-z5YxeZ3bDh7GLhsIQ_iO4uwg28";
+const SUPABASE_URL = "https://jnkmaaowrjxfepdkadfi.supabase.co/rest/v1/";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impua21hYW93cmp4ZmVwZGthZGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2Mjc4MzksImV4cCI6MjEwODIwMzgzOX0.YBBOQJN-18s8dPvawPU_c-lECTm4C86P79tmJwAUWpY";
 // Kunci anon/publishable AMAN ditaruh di frontend (keamanan data dijaga RLS).
