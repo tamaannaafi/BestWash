@@ -6,6 +6,10 @@
   <title>Admin - BestWash</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase + proteksi halaman (HARUS di <head>, sebelum script lain) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="guard.js" data-role="admin"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -31,7 +35,7 @@ tailwind.config = {
 
 <body class="relative min-h-screen overflow-x-hidden bg-brand font-sans text-black antialiased">
   <div class="relative z-10 mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-    <a href="landingpage.html" class="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-base font-bold text-white shadow-md transition hover:bg-[#093a63] focus:outline-none focus-visible:ring-4 focus-visible:ring-white/70"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M10 6l-6 6 6 6"/></svg> Kembali</a>
+    <a href="landing_page.html" class="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-base font-bold text-white shadow-md transition hover:bg-[#093a63] focus:outline-none focus-visible:ring-4 focus-visible:ring-white/70"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M10 6l-6 6 6 6"/></svg> Kembali</a>
   </div>
 
   <div class="relative z-10 mx-auto max-w-7xl px-4 pb-48 pt-5 sm:px-6 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start lg:gap-6">
@@ -501,7 +505,7 @@ tailwind.config = {
       });
 
       document.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => b.closest('dialog').close()));
-      $('logout').addEventListener('click', () => { Auth.clear(); location.href = 'landingpage.html'; });
+      $('logout').addEventListener('click', () => { Auth.clear(); BestWashAuth.logout(); });
 
       function render() { renderRingkasan(); renderPesanan(); renderLayanan(); renderPelanggan(); renderLaporan(); }
       window.addEventListener('hashchange', setTab);

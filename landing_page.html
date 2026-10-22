@@ -288,7 +288,11 @@
       >
         <!-- Card 1: Cuci Reguler -->
         <div
-          class="rounded-3xl overflow-hidden shadow-xl h-[440px] md:h-[480px] flex flex-col hover:scale-105 transition-transform duration-300"
+          data-paket="reguler"
+          role="link"
+          tabindex="0"
+          aria-label="Pesan paket Cuci Reguler"
+          class="cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-white/70 rounded-3xl overflow-hidden shadow-xl h-[440px] md:h-[480px] flex flex-col hover:scale-105 transition-transform duration-300"
         >
           <!-- Header Card (Cyan) -->
           <div class="bg-[#93E1E3] p-8 flex flex-col justify-between h-[45%]">
@@ -323,7 +327,11 @@
 
         <!-- Card 2: Cuci + Setrika -->
         <div
-          class="rounded-3xl overflow-hidden shadow-xl h-[440px] md:h-[480px] flex flex-col hover:scale-105 transition-transform duration-300"
+          data-paket="setrika"
+          role="link"
+          tabindex="0"
+          aria-label="Pesan paket Cuci + Setrika"
+          class="cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-white/70 rounded-3xl overflow-hidden shadow-xl h-[440px] md:h-[480px] flex flex-col hover:scale-105 transition-transform duration-300"
         >
           <!-- Header Card (Cyan) -->
           <div class="bg-[#93E1E3] p-8 flex flex-col justify-between h-[45%]">
@@ -358,7 +366,11 @@
 
         <!-- Card 3: Express -->
         <div
-          class="rounded-3xl overflow-hidden shadow-xl h-[440px] md:h-[480px] flex flex-col hover:scale-105 transition-transform duration-300"
+          data-paket="express"
+          role="link"
+          tabindex="0"
+          aria-label="Pesan paket Express"
+          class="cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-white/70 rounded-3xl overflow-hidden shadow-xl h-[440px] md:h-[480px] flex flex-col hover:scale-105 transition-transform duration-300"
         >
           <!-- Header Card (Cyan) -->
           <div class="bg-[#93E1E3] p-8 flex flex-col justify-between h-[45%]">
@@ -493,6 +505,11 @@
         </div>
 
         </div>
+
+    <!-- Supabase (CDN) + konfigurasi + logika halaman -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="landing.js"></script>
 
     <!-- Panggil File JavaScript Utama -->
     <script src="script.js"></script>

@@ -113,7 +113,7 @@
         </p>
         <h2 class="text-3xl md:text-4xl font-extrabold mb-8">Sign In</h2>
 
-        <form action="#" method="POST" class="space-y-6">
+        <form id="login-form" action="#" method="POST" class="space-y-6">
           <!-- Username Input -->
           <div>
             <label class="block text-lg font-bold mb-2">Username</label>
@@ -135,6 +135,8 @@
               </span>
               <input
                 type="text"
+                id="username"
+                autocomplete="username"
                 placeholder="Masukkan Username"
                 class="w-full bg-white text-black pl-11 pr-4 py-3 rounded-full text-sm font-medium placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#93E1E3]"
                 required
@@ -195,6 +197,9 @@
             </div>
           </div>
 
+          <!-- Kotak pesan error/sukses (diisi oleh auth.js) -->
+          <div id="auth-alert" role="alert" class="hidden"></div>
+
           <!-- Submit Button -->
           <div class="pt-2">
             <button
@@ -236,6 +241,11 @@
         ></path>
       </svg>
     </div>
+
+    <!-- Supabase (CDN) + konfigurasi + logika halaman -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
 
     <!-- Panggil File JavaScript Utama -->
     <script src="script.js"></script>
