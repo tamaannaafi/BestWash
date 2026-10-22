@@ -216,6 +216,68 @@
       </svg>
     </div>
 
+    <!-- Pop-up OTP Modal (Hidden by default) -->
+    <div
+      id="otp-modal"
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+    >
+      <div
+        id="otp-card"
+        class="bg-white rounded-3xl p-8 shadow-2xl w-[90%] max-w-sm transform scale-95 transition-all duration-300"
+      >
+        <div class="text-center">
+          <div
+            class="mx-auto w-16 h-16 bg-[#93E1E3]/30 text-[#1E90FF] rounded-full flex items-center justify-center mb-4"
+          >
+            <svg
+              class="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">Cek Email Kamu</h3>
+          <p class="text-sm text-gray-500 mb-6">
+            Kami telah mengirimkan 6 digit kode unik. Masukkan kode tersebut di
+            bawah ini untuk mengaktifkan akunmu.
+          </p>
+
+          <input
+            type="text"
+            id="otp-input"
+            maxlength="6"
+            inputmode="numeric"
+            placeholder="------"
+            class="w-full text-center text-2xl tracking-[0.5em] font-bold bg-gray-50 border border-gray-200 text-black py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1E90FF]"
+          />
+          <p
+            id="otp-error"
+            class="text-red-500 text-xs font-semibold mt-2 hidden"
+          >
+            Kode OTP salah atau kedaluwarsa.
+          </p>
+
+          <button
+            type="button"
+            id="btn-verify-otp"
+            class="mt-6 w-full bg-[#1E90FF] text-white font-bold text-lg py-3 rounded-full hover:bg-blue-600 transition shadow-md"
+          >
+            Verifikasi & Buat Akun
+          </button>
+          <p class="text-xs text-gray-400 mt-4">
+            Klik area gelap di luar kotak ini untuk menutup.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- Supabase (CDN) + konfigurasi + logika halaman -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>

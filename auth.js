@@ -56,7 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return "Tidak bisa terhubung ke server. Periksa koneksi internetmu.";
     if (msg.includes("get_email_by_username"))
       return "Setup database belum lengkap. Jalankan SQL di Supabase dulu (langkah 4 pada panduan).";
-    return "Terjadi kesalahan: " + ((err && err.message) || "silakan coba lagi.");
+    return (
+      "Terjadi kesalahan: " + ((err && err.message) || "silakan coba lagi.")
+    );
   }
 
   // Bawa parameter ?next= saat pindah antara halaman Sign In <-> Sign Up
@@ -119,7 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
       setLoading(button, true);
 
       try {
-
         // login lewat Supabase Auth
         // Supabase login memakai email, jadi username diubah dulu jadi email
         // lewat fungsi SQL get_email_by_username (dibuat di langkah 4).
@@ -154,67 +155,128 @@ document.addEventListener("DOMContentLoaded", () => {
   // REGISTER
   // =====================================================================
   if (registerForm) {
+    const otpModal = document.getElementById("otp-modal");
+    const otpCard = document.getElementById("otp-card");
+    const verifyBtn = document.getElementById("btn-verify-otp");
+    const otpInput = document.getElementById("otp-input");
+    const otpError = document.getElementById("otp-error");
+
+    let pendingEmail = ""; // Menyimpan email untuk verifikasi OTP nanti
+
+    // Fungsi untuk menutup modal OTP
+    const closeModal = () => {
+      otpModal.classList.add("opacity-0", "pointer-events-none");
+      otpCard.classList.remove("scale-100");
+      otpCard.classList.add("scale-95");
+    };
+
+    // 1. Submit form register awal (Kirim Kode ke Email)
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       hideAlert();
 
-      if (!SUPABASE_READY) return showAlert(supabaseNotReadyMessage());
+      if (!SUPABASE_READY) return showAlert("Supabase belum siap.");
 
-      const username = $("username").value.trim();
-      const email = $("email").value.trim();
-      const password = $("password").value;
-      const noTelp = $("telp").value.replace(/[\s-]/g, "");
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const noTelp = document
+        .getElementById("telp")
+        .value.replace(/[\s-]/g, "");
 
-      // ---- Validasi sederhana ----
+      // Validasi dasar
       if (!/^[A-Za-z0-9_]{3,20}$/.test(username))
         return showAlert(
-          "Username 3-20 karakter: hanya huruf, angka, dan underscore (_).",
+          "Username 3-20 karakter: huruf, angka, underscore (_).",
         );
       if (username.toLowerCase() === ADMIN_USERNAME)
         return showAlert('Username "admin" tidak boleh dipakai.');
-      if (password.length < 6)
-        return showAlert("Password minimal 6 karakter.");
-      if (!/^\+?[0-9]{9,15}$/.test(noTelp))
-        return showAlert("Nomor telepon tidak valid (9-15 angka).");
+      if (password.length < 6) return showAlert("Password minimal 6 karakter.");
 
       const button = registerForm.querySelector('button[type="submit"]');
       setLoading(button, true);
 
       try {
-        // Username sudah dipakai orang lain?
+        // Cek apakah username sudah dipakai
         const { data: dipakai, error: errCek } = await supabaseClient.rpc(
           "get_email_by_username",
           { p_username: username },
         );
         if (errCek) throw errCek;
-        if (dipakai) return showAlert("Username sudah dipakai, pilih yang lain.");
+        if (dipakai)
+          return showAlert("Username sudah dipakai, pilih yang lain.");
 
-        // Buat akun. username & no_telp ikut disimpan di "metadata";
-        // trigger SQL kemudian menyalinnya ke tabel profiles.
+        // Daftar ke Supabase (Supabase akan mengirimkan email OTP otomatis)
         const { data, error } = await supabaseClient.auth.signUp({
           email,
           password,
           options: { data: { username, no_telp: noTelp } },
         });
+
         if (error) throw error;
-
-        // Email sudah terdaftar (Supabase mengembalikan user "kosong" tanpa error)
-        if (data.user && data.user.identities && data.user.identities.length === 0)
+        if (
+          data.user &&
+          data.user.identities &&
+          data.user.identities.length === 0
+        ) {
           return showAlert("Email sudah terdaftar. Silakan login.");
+        }
 
-        // Jika "Confirm email" nonaktif, Supabase langsung membuat sesi.
-        // Kita logout dulu supaya user login manual dari halaman Sign In.
-        const perluVerifikasi = !data.session;
-        if (data.session) await supabaseClient.auth.signOut();
-
-        location.href =
-          "login.html?registered=" +
-          (perluVerifikasi ? "confirm" : "1") +
-          (nextPage ? "&next=" + encodeURIComponent(nextPage) : "");
+        // Simpan email sementara lalu munculkan Modal OTP
+        pendingEmail = email;
+        otpModal.classList.remove("opacity-0", "pointer-events-none");
+        otpCard.classList.remove("scale-95");
+        otpCard.classList.add("scale-100");
       } catch (err) {
         showAlert(translateError(err));
       } finally {
         setLoading(button, false);
+      }
+    });
+
+    // 2. Tutup pop-up jika mengklik area gelap di sekitarnya
+    otpModal.addEventListener("click", (e) => {
+      // Pastikan yang diklik adalah background gelap (modal), bukan isi dalam card
+      if (e.target === otpModal) {
+        closeModal();
+      }
+    });
+
+    // 3. Proses Verifikasi Kode OTP (Buat Akun)
+    verifyBtn.addEventListener("click", async () => {
+      const token = otpInput.value.trim();
+
+      if (token.length !== 6) {
+        otpError.textContent = "Kode harus 6 digit angka.";
+        otpError.classList.remove("hidden");
+        return;
+      }
+
+      verifyBtn.textContent = "Memverifikasi...";
+      verifyBtn.disabled = true;
+
+      try {
+        // Verifikasi OTP ke Supabase
+        const { data, error } = await supabaseClient.auth.verifyOtp({
+          email: pendingEmail,
+          token: token,
+          type: "signup", // Menandakan bahwa ini OTP untuk pembuatan akun
+        });
+
+        if (error) throw error;
+
+        // OTP Valid -> Akun Terbuat dan langsung login
+        closeModal();
+
+        // Jika berhasil, logout sementara lalu arahkan ke login agar pengguna masuk manual
+        await supabaseClient.auth.signOut();
+        location.href = "login.html?registered=1";
+      } catch (error) {
+        otpError.textContent = "Kode OTP salah atau sudah kedaluwarsa.";
+        otpError.classList.remove("hidden");
+      } finally {
+        verifyBtn.textContent = "Verifikasi & Buat Akun";
+        verifyBtn.disabled = false;
       }
     });
   }
