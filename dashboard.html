@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id" class="motion-safe:scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - BestWash</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script>
+// Konfigurasi Tailwind bersama (dimuat setelah script Tailwind CDN)
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+      colors: {
+        nav: '#4DA6FF',
+        brand: '#1E90FF',
+        navy: '#0B4A7D',
+        heading: '#0E5FB5',
+        aqua: '#97E3E3',
+      },
+    },
+  },
+};
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;max-width:100%;overflow-x:hidden}img,svg,video,canvas{max-width:100%}input,select,textarea,button{font:inherit;max-width:100%}main,section,form,aside{min-width:0}textarea{resize:vertical;overflow-wrap:anywhere}
+    .app-layout{width:min(100%,80rem);margin-inline:auto}
+    .order-layout{display:grid;grid-template-columns:minmax(0,1fr) 21rem;gap:1.5rem}
+    @media(max-width:1150px){.app-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:1.25rem}.app-layout>aside{position:static!important}.app-layout>main{margin-top:0}.order-layout{grid-template-columns:minmax(0,1fr) minmax(15rem,.7fr)}}
+    @media(max-width:760px){.order-layout{grid-template-columns:minmax(0,1fr)}.app-layout{padding-inline:1rem}.app-layout>aside nav{flex-direction:row;overflow-x:auto}.app-layout>aside nav a{flex:0 0 auto}.app-layout>aside nav a span{white-space:nowrap}}
+    @media(max-width:480px){.app-layout{padding-inline:.65rem}.order-layout form{padding:1rem}.order-layout form [data-paket-list]{grid-template-columns:minmax(0,1fr)}[data-panel="beranda"]>div:first-child{grid-template-columns:minmax(0,1fr)}#judul{font-size:1.65rem;line-height:1.25}.order-layout form button[type="submit"]{width:100%;justify-content:center}}
+  </style>
+</head>
+
+<body class="relative min-h-screen overflow-x-hidden bg-brand font-sans text-black antialiased">
+ 
+
+  <div class="relative z-10 app-layout relative z-10 mx-auto max-w-7xl px-4 pb-48 pt-5 sm:px-6 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start lg:gap-6">
+    <aside class="self-start overflow-hidden rounded-2xl border border-white/60 shadow-md lg:sticky lg:top-6">
+      <div class="flex items-center gap-3 bg-white/85 p-5"><span data-initial class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand/15 text-xl font-bold text-heading">U</span>
+        <div class="min-w-0"><p class="truncate text-lg font-bold text-heading" data-user>User</p><p class="text-sm font-semibold text-navy">Pelanggan Member</p>
+          <span class="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-bold text-emerald-700"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Akun Aktif</span></div></div>
+      <nav id="nav" class="flex gap-1 overflow-x-auto bg-nav p-3 lg:flex-col lg:overflow-visible"><a href="#beranda" data-tab="beranda" class="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Dashboard & Pesan</span></a><a href="#status" data-tab="status" class="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg><span>Status Laundry</span><span id="badge-status" class="ml-auto inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-amber-400 px-1.5 text-xs font-bold text-slate-900">0</span></a><a href="#riwayat" data-tab="riwayat" class="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg><span>Riwayat Transaksi</span></a><a href="#tarif" data-tab="tarif" class="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1"/></svg><span>Layanan & Tarif</span></a><a href="#profil" data-tab="profil" class="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Profil & Alamat</span></a><a href="#bantuan" data-tab="bantuan" class="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="14" width="4" height="6" rx="1"/><rect x="18" y="14" width="4" height="6" rx="1"/></svg><span>Bantuan CS</span></a></nav>
+      <div class="bg-nav px-3 pb-3">
+      <a href="landingpage.html" class="flex w-full items-center justify-center gap-2 rounded-xl 
+        bg-navy px-4 py-3 text-sm font-bold text-white transition hover:bg-[#093a63] focus:outline-none 
+        focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" 
+        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg> Kembali </a>
+      </div>
+      <div class="bg-nav px-3 pb-3">
+        <button id="logout" type="button" class="flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-4 py-3 text-sm font-bold text-white transition hover:bg-[#093a63] focus:outline-none focus-visible:ring-4 focus-visible:ring-white/60"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Keluar (Logout)</button>
+      </div>
+    </aside>
+
+    <main class="mt-6 min-w-0 space-y-6 lg:mt-0">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div><h1 id="judul" class="text-3xl font-bold text-white">Selamat Datang</h1><p id="sub" class="mt-1 text-white/90"></p></div>
+        <a id="btn-baru" href="#beranda" class="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#093a63] focus:outline-none focus-visible:ring-4 focus-visible:ring-heading/40"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Pesanan Baru</a>
+      </div>
+      <div id="toast" role="status" class="hidden rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800"></div>
+
+      <!-- DASHBOARD & PESAN -->
+      <section data-panel="beranda" class="space-y-6">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <article class="overflow-hidden rounded-2xl border border-white/60 shadow-md">
+          <div class="flex items-center justify-between gap-3 bg-white/85 px-5 py-4">
+            <div><p class="text-[11px] font-bold tracking-wide text-navy">CUCIAN DIPROSES</p><p class="mt-1 text-3xl font-bold text-heading"><span data-stat="proses">0</span> <span class="text-sm font-medium text-navy">paket</span></p></div>
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/15 text-heading"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3l-5 4 3 3 2-1v12h8V9l2 1 3-3-5-4a4 4 0 0 1-8 0z"/></svg></span>
+          </div>
+          <p class="bg-nav px-5 py-2 text-xs font-semibold text-white">Sedang dicuci & setrika</p>
+        </article>
+        <article class="overflow-hidden rounded-2xl border border-white/60 shadow-md">
+          <div class="flex items-center justify-between gap-3 bg-white/85 px-5 py-4">
+            <div><p class="text-[11px] font-bold tracking-wide text-navy">SIAP DIAMBIL/DIANTAR</p><p class="mt-1 text-3xl font-bold text-heading"><span data-stat="siap">0</span> <span class="text-sm font-medium text-navy">paket</span></p></div>
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/15 text-heading"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></span>
+          </div>
+          <p class="bg-nav px-5 py-2 text-xs font-semibold text-white">Menunggu pengiriman</p>
+        </article>
+        <article class="overflow-hidden rounded-2xl border border-white/60 shadow-md">
+          <div class="flex items-center justify-between gap-3 bg-white/85 px-5 py-4">
+            <div><p class="text-[11px] font-bold tracking-wide text-navy">TOTAL SELESAI</p><p class="mt-1 text-3xl font-bold text-heading"><span data-stat="selesai">0</span> <span class="text-sm font-medium text-navy">transaksi</span></p></div>
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/15 text-heading"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span>
+          </div>
+          <p class="bg-nav px-5 py-2 text-xs font-semibold text-white">Langganan Setia</p>
+        </article>
+        <article class="overflow-hidden rounded-2xl border border-white/60 shadow-md">
+          <div class="flex items-center justify-between gap-3 bg-white/85 px-5 py-4">
+            <div><p class="text-[11px] font-bold tracking-wide text-navy">POIN REWARDS</p><p class="mt-1 text-3xl font-bold text-heading"><span data-stat="poin">0</span> <span class="text-sm font-medium text-navy">Poin</span></p></div>
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand/15 text-heading"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span>
+          </div>
+          <p class="bg-nav px-5 py-2 text-xs font-semibold text-white">Tukar voucher cuci gratis</p>
+        </article>
+        </div>
+        <div class="order-layout grid gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
+          <form id="form-pesan" class="rounded-2xl bg-white/95 p-5 shadow-lg sm:p-6 scroll-mt-6">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="flex items-start gap-3"><span class="mt-1 text-heading"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6a1 1 0 0 1 1 1v2H8V5a1 1 0 0 1 1-1z"/><path d="M8 6H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2M9 15l2 2 4-4"/></svg></span><div><h2 class="text-xl font-bold text-heading">Formulir Pemesanan Cucian</h2><p class="text-sm text-slate-500">Isi detail pesanan laundry kamu dengan mudah.</p></div></div>
+            <span class="rounded-full bg-aqua px-3 py-1 text-xs font-bold text-navy">BestWash Express Ready</span>
+          </div>
+          <fieldset class="mt-5 border-t border-slate-100 pt-5"><legend class="block text-sm font-bold text-navy">1. Pilih paket</legend><div data-paket-list class="mt-2 grid gap-3 sm:grid-cols-3"></div></fieldset>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div><label for="berat" class="block text-sm font-bold text-navy">2. Perkiraan berat (kg)</label><input id="berat" type="number" min="1" max="50" step="0.5" value="3" required class="mt-1 h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20" /><p class="mt-1 text-xs text-slate-500">*Berat pasti ditimbang ulang oleh tim BestWash.</p></div>
+            <div><label for="parfum" class="block text-sm font-bold text-navy">Parfum cucian</label><select id="parfum" class="mt-1 h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20"><option>Ocean Fresh</option><option>Lavender</option><option>Sakura</option><option>Tanpa parfum</option></select></div>
+          </div>
+          <label class="mt-5 flex cursor-pointer items-start gap-3 rounded-xl border border-slate-300 bg-slate-50 p-4"><input type="checkbox" name="antar_jemput" value="ya" class="mt-1 h-4 w-4 accent-[#1E90FF]" /><span class="text-sm font-semibold text-navy">Layanan antar-jemput (+<span data-ongkir-label>Rp 7.000</span>)<span class="block text-xs font-normal text-slate-500">Kurir BestWash menjemput dan mengantar cucianmu.</span></span></label>
+          <p class="mt-6 text-sm font-bold text-navy">3. Data pemesan</p>
+          <div class="grid gap-4 sm:grid-cols-2"><div><label for="nama" class="sr-only">Nama</label><input id="nama" type="text" required placeholder="Nama lengkap" class="mt-1 h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20" /></div><div><label for="hp" class="sr-only">Nomor WhatsApp</label><input id="hp" type="tel" required placeholder="Nomor WhatsApp, mis. 08xxxxxxxxxx" class="mt-1 h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20" /></div></div>
+          <label for="alamat" class="sr-only">Alamat</label><textarea id="alamat" rows="2" placeholder="Alamat penjemputan (wajib jika memilih antar-jemput)" class="mt-4 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20"></textarea>
+          <label for="catatan" class="sr-only">Catatan</label><textarea id="catatan" rows="2" placeholder="Catatan tambahan (opsional), mis. baju putih dipisah" class="mt-3 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20"></textarea>
+          <div class="mt-6 rounded-2xl bg-gradient-to-br from-[#0b4a7d] to-[#06304f] p-5 text-white">
+            <div class="flex justify-between text-sm"><span class="text-cyan-200">Rincian Biaya Cucian:</span><span class="font-bold" data-sum="rincian">Rp 0</span></div>
+            <div class="mt-1 flex justify-between text-sm"><span class="text-cyan-200">Ongkos Antar-Jemput:</span><span class="font-bold" data-sum="ongkir">Rp 0</span></div>
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-white/20 pt-4">
+              <div><p class="text-[11px] font-bold tracking-wide text-cyan-200">TOTAL ESTIMASI</p><p class="text-4xl font-extrabold text-cyan-300" data-sum="total" aria-live="polite">Rp 0</p><p class="text-[11px] text-white/60" data-sum="caption"></p></div>
+              <button type="submit" class="inline-flex items-center gap-3 rounded-xl bg-cyan-400 px-6 py-4 text-base font-extrabold text-sky-950 transition hover:bg-cyan-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200">Konfirmasi Pesanan <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </div>
+        </form>
+          <div class="space-y-6">
+            <section class="rounded-2xl bg-white/95 p-5 shadow-lg sm:p-6"><h2 class="text-lg font-bold text-heading">Cucian Aktif Saat Ini</h2><div id="status-mini" class="mt-4"></div><a href="#status" class="mt-4 flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-200">Lihat Semua Status Cucian</a></section>
+            <section class="rounded-2xl bg-navy p-5 text-white shadow-lg"><span class="rounded-full bg-aqua px-3 py-1 text-[11px] font-bold text-navy">BANTUAN FAST RESPONSE</span><h2 class="mt-3 text-lg font-bold">Ada Kendala Cucian?</h2><p class="text-sm text-white/80">Hubungi kasir &amp; admin via WhatsApp.</p><a id="wa-link" href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-heading transition hover:bg-aqua"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 20.5l1.6-5.4A8.5 8.5 0 1 1 21 11.5z"/></svg> Chat WhatsApp</a></section>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATUS LAUNDRY -->
+      <section data-panel="status" class="hidden rounded-2xl bg-white/95 p-5 shadow-lg sm:p-6"><div id="status-list" class="space-y-5"></div><button id="status-toggle" type="button" class="mt-5 flex w-full items-center justify-center rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-200"></button></section>
+
+      <!-- RIWAYAT -->
+      <section data-panel="riwayat" class="hidden rounded-2xl bg-white/95 p-5 shadow-lg sm:p-6"><p id="riwayat-sum" class="text-sm font-bold text-navy"></p><div id="riwayat" class="mt-3 overflow-x-auto"></div></section>
+
+      <!-- TARIF -->
+      <section data-panel="tarif" class="hidden"><div id="tarif-list" class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"></div></section>
+
+      <!-- PROFIL -->
+      <section data-panel="profil" class="hidden rounded-2xl bg-white/95 p-5 shadow-lg sm:p-6">
+        <form id="form-profil" class="max-w-xl space-y-4">
+          <div class="flex items-center justify-between gap-3"><h2 class="text-xl font-bold text-heading">Data Diri</h2><span id="p-sejak" class="text-xs font-semibold text-navy"></span></div>
+          <div><label for="p-user" class="block text-sm font-bold text-navy">Username</label><input id="p-user" type="text" readonly class="mt-1 h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20 bg-slate-100 text-slate-500" /></div>
+          <div><label for="p-nama" class="block text-sm font-bold text-navy">Nama lengkap</label><input id="p-nama" type="text" placeholder="Nama lengkap" class="mt-1 h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20" /></div>
+          <div><label for="p-hp" class="block text-sm font-bold text-navy">Nomor WhatsApp</label><input id="p-hp" type="tel" placeholder="08xxxxxxxxxx" class="mt-1 h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20" /></div>
+          <div><label for="p-alamat" class="block text-sm font-bold text-navy">Alamat penjemputan</label><textarea id="p-alamat" rows="3" placeholder="Alamat lengkap" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/20"></textarea></div>
+          <button type="submit" class="rounded-full bg-navy px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[#093a63] focus:outline-none focus-visible:ring-4 focus-visible:ring-heading/40">Simpan Profil</button>
+        </form>
+      </section>
+
+      <!-- BANTUAN -->
+      <section data-panel="bantuan" class="hidden grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div class="rounded-2xl bg-white/95 p-5 shadow-lg sm:p-6 space-y-3"><h2 class="text-xl font-bold text-heading">Pertanyaan Umum</h2><details class="group rounded-xl border border-slate-200 p-4"><summary class="cursor-pointer list-none text-sm font-bold text-heading marker:hidden">Bagaimana memantau status cucian?</summary><p class="mt-2 text-sm text-slate-600">Buka menu Status Laundry. Tahapnya diperbarui otomatis setiap kali admin mengubah status pesananmu.</p></details><details class="group rounded-xl border border-slate-200 p-4"><summary class="cursor-pointer list-none text-sm font-bold text-heading marker:hidden">Apakah berat cucian bisa berubah?</summary><p class="mt-2 text-sm text-slate-600">Berat di formulir hanya perkiraan. Berat pasti ditimbang ulang oleh tim BestWash, dan total akan menyesuaikan.</p></details><details class="group rounded-xl border border-slate-200 p-4"><summary class="cursor-pointer list-none text-sm font-bold text-heading marker:hidden">Bagaimana memakai layanan antar-jemput?</summary><p class="mt-2 text-sm text-slate-600">Centang opsi antar-jemput di formulir pemesanan dan isi alamatnya. Kurir BestWash akan menjemput dan mengantar cucianmu.</p></details><details class="group rounded-xl border border-slate-200 p-4"><summary class="cursor-pointer list-none text-sm font-bold text-heading marker:hidden">Bagaimana poin rewards dihitung?</summary><p class="mt-2 text-sm text-slate-600">Setiap pesanan yang selesai memberi 1 poin untuk tiap Rp1.000 total pesanan.</p></details></div>
+        <div class="rounded-2xl bg-white/95 p-5 shadow-lg sm:p-6"><h2 class="text-xl font-bold text-heading">Kontak BestWash</h2>
+          <dl class="mt-3 space-y-3 text-sm"><div><dt class="font-bold text-navy">WhatsApp</dt><dd class="text-slate-600" data-set="telp">0812-3456-7890</dd></div><div><dt class="font-bold text-navy">Jam Buka</dt><dd class="text-slate-600" data-set="jam">Setiap hari, 07.00 - 21.00</dd></div><div><dt class="font-bold text-navy">Alamat</dt><dd class="text-slate-600" data-set="alamat">Jl. Contoh No. 123, Kota Anda</dd></div></dl>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 leading-[0]" aria-hidden="true">
+    <svg viewBox="0 0 1440 260" preserveAspectRatio="none" class="h-40 w-full md:h-56" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#97E3E3" d="M0 90 C 260 10, 520 10, 760 70 S 1200 190, 1440 40 L1440 260 L0 260 Z" />
+    </svg>
+  </div>
+
+  <script>
+    // ===== BestWash: login + penyimpanan data di browser (localStorage) =====
+    const Auth = {
+      KEY: 'bestwash_user', ROLE: 'bestwash_role',
+      get() { try { return localStorage.getItem(this.ROLE) === 'admin' ? null : localStorage.getItem(this.KEY); } catch (e) { return null; } },
+      isAdmin() { try { return localStorage.getItem(this.ROLE) === 'admin'; } catch (e) { return false; } },
+      set(name, role) { try { localStorage.setItem(this.KEY, name); localStorage.setItem(this.ROLE, role || 'user'); } catch (e) {} },
+      clear() { try { localStorage.removeItem(this.KEY); localStorage.removeItem(this.ROLE); } catch (e) {} },
+    };
+    // Halaman tujuan setelah login (hanya file .html lokal)
+    function nextPage(fallback) {
+      const n = new URLSearchParams(location.search).get('next');
+      return n && /^[\w-]+\.html(\?[\w=&%.+-]*)?$/.test(n) ? n : fallback;
+    }
+
+    const STATUS = ['Pesanan Diterima', 'Penimbangan & Penilaian', 'Proses Cuci & Pengeringan', 'Setrika & Packaging', 'Siap Diambil / Diantar', 'Selesai'];
+    const DEFAULT_SERVICES = [
+      { id: 'reguler', nama: 'Cuci Reguler', harga: 9000, fitur: ['Cuci + Kering', 'Wangi & Bersih', 'Siap Dipakai'], aktif: true },
+      { id: 'setrika', nama: 'Cuci + Setrika', harga: 12000, fitur: ['Cuci + Kering', 'Setrika Rapi', 'Wangi Tahan Lama'], aktif: true },
+      { id: 'express', nama: 'Express', harga: 15000, fitur: ['Lebih Cepat', 'Cuci + Kering', 'Setrika Rapi'], aktif: true },
+    ];
+    const DEFAULT_SETTINGS = { wa: '6281234567890', telp: '0812-3456-7890', alamat: 'Jl. Contoh No. 123, Kota Anda', jam: 'Setiap hari, 07.00 - 21.00', ongkir: 7000 };
+    const rp = (n) => 'Rp ' + Math.round(n || 0).toLocaleString('id-ID');
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const DB = {
+      load(k, def) { try { const v = localStorage.getItem('bestwash_' + k); return v ? JSON.parse(v) : def; } catch (e) { return def; } },
+      save(k, v) { try { localStorage.setItem('bestwash_' + k, JSON.stringify(v)); } catch (e) {} },
+      services() { let s = this.load('services', null); if (!s) { s = DEFAULT_SERVICES; this.save('services', s); } return s; },
+      saveServices(s) { this.save('services', s); },
+      settings() { return Object.assign({}, DEFAULT_SETTINGS, this.load('settings', {})); },
+      saveSettings(o) { this.save('settings', o); },
+      orders() { return this.load('orders', []); },
+      saveOrders(o) { this.save('orders', o); },
+      customers() { return this.load('customers', []); },
+      profile(u) { return this.load('profile_' + String(u).toLowerCase(), {}); },
+      saveProfile(u, p) { this.save('profile_' + String(u).toLowerCase(), p); },
+      addCustomer(username, email) {
+        const list = this.customers();
+        const c = list.find((x) => x.username.toLowerCase() === username.toLowerCase());
+        if (c) { if (email && !c.email) c.email = email; } else list.push({ username, email: email || '', joinedAt: new Date().toISOString() });
+        this.save('customers', list);
+      },
+      addOrder(d) {
+        const list = this.orders();
+        const t = new Date();
+        const ymd = t.getFullYear() + String(t.getMonth() + 1).padStart(2, '0') + String(t.getDate()).padStart(2, '0');
+        const prefix = 'BW-' + ymd + '-';
+        const seq = list.filter((o) => o.id.indexOf(prefix) === 0).reduce((m, o) => Math.max(m, parseInt(o.id.slice(prefix.length), 10) || 0), 0) + 1;
+        const now = t.toISOString();
+        const o = Object.assign({ status: 0, createdAt: now, updatedAt: now }, d, { id: prefix + String(seq).padStart(3, '0') });
+        list.push(o);
+        this.saveOrders(list);
+        return o;
+      },
+    };
+
+    // Jalankan fn setiap data berubah (dari tab lain lewat event 'storage', atau lewat pengecekan berkala)
+    function watch(fn) {
+      const snap = () => { try { return ['orders', 'services', 'settings', 'customers'].map((k) => localStorage.getItem('bestwash_' + k)).join('|'); } catch (e) { return ''; } };
+      let last = snap();
+      const check = () => { const now = snap(); if (now !== last) { last = now; fn(); } };
+      window.addEventListener('storage', check);
+      setInterval(check, 1500);
+    }
+
+    // Nama pengguna dibandingkan tanpa membedakan huruf besar/kecil ("Siti" = "siti")
+    const sameUser = (a, b) => String(a || '').toLowerCase() === String(b || '').toLowerCase();
+
+    // Form pemesanan dengan perhitungan biaya real-time (dipakai pemesanan.html & dashboard.html)
+    function initOrderForm(form, opt) {
+      const q = (s) => form.querySelector(s);
+      const list = q('[data-paket-list]');
+      const want = new URLSearchParams(location.search).get('paket');
+      const icons = ['<path d="M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h8"/>', '<path d="M8 3l-5 4 3 3 2-1v12h8V9l2 1 3-3-5-4a4 4 0 0 1-8 0z"/>', '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'];
+      let svcs = [], settings = DB.settings();
+
+      // Daftar paket & ongkir dibaca ulang setiap data berubah (mis. admin mengubah harga atau menghapus layanan)
+      function renderPackages() {
+        settings = DB.settings();
+        svcs = DB.services().filter((s) => s.aktif);
+        const cur = q('input[name="paket"]:checked');
+        const sel = svcs.find((s) => s.id === (cur ? cur.value : want)) || svcs[0];
+        list.innerHTML = svcs.length ? svcs.map((s, i) => `<label class="cursor-pointer"><input type="radio" name="paket" value="${esc(s.id)}" class="peer sr-only"${s === sel ? ' checked' : ''} /><span class="flex h-full flex-col items-center gap-1 rounded-2xl border-2 border-slate-200 bg-white p-3 text-center text-sm font-bold text-slate-700 transition ${opt.checked} peer-focus-visible:ring-4 peer-focus-visible:ring-sky-200"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[i % 3]}</svg><span>${esc(s.nama)}</span><span class="text-xs font-semibold text-slate-500">${rp(s.harga)} / kg</span></span></label>`).join('') : '<p class="text-sm text-slate-500">Belum ada layanan aktif.</p>';
+        form.querySelectorAll('[data-ongkir-label]').forEach((el) => { el.textContent = rp(settings.ongkir); });
+      }
+      const set = (k, v) => { const el = q('[data-sum="' + k + '"]'); if (el) el.textContent = v; };
+      const calc = () => {
+        const r = q('input[name="paket"]:checked');
+        const svc = svcs.find((s) => r && s.id === r.value);
+        const berat = Math.min(50, Math.max(0, parseFloat(q('#berat').value) || 0));
+        const antar = q('[name="antar_jemput"]').checked;
+        const biaya = svc ? svc.harga * berat : 0;
+        const ongkir = antar ? settings.ongkir : 0;
+        return { svc, berat, antar, biaya, ongkir, total: biaya + ongkir };
+      };
+      const paint = () => {
+        const c = calc();
+        set('rincian', rp(c.biaya)); set('ongkir', rp(c.ongkir)); set('total', rp(c.total));
+        set('caption', c.svc ? 'Estimasi: ' + c.berat.toLocaleString('id-ID') + ' kg ' + c.svc.nama : 'Pilih paket cucian');
+        const al = q('#alamat');
+        if (al) { al.required = c.antar; if (al.hasAttribute('data-toggle')) al.classList.toggle('hidden', !c.antar); }
+      };
+      form.addEventListener('input', paint);
+      form.addEventListener('change', paint);
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const c = calc();
+        if (!c.svc) { alert('Paket yang dipilih tidak tersedia. Silakan pilih paket lain.'); return; }
+        const v = (s) => { const el = q(s); return el ? el.value.trim() : ''; };
+        const me = Auth.get();
+        const order = DB.addOrder({ user: me, nama: v('#nama') || me, hp: v('#hp'), paketId: c.svc.id, paket: c.svc.nama, harga: c.svc.harga, berat: c.berat, parfum: v('#parfum'), antar: c.antar, ongkir: c.ongkir, biaya: c.biaya, total: c.total, alamat: v('#alamat'), catatan: v('#catatan') });
+        opt.onDone(order);
+      });
+      renderPackages(); paint();
+      watch(() => { renderPackages(); paint(); });
+      return paint;
+    }
+  </script>
+  <script>
+    (function () {
+      const me = Auth.get();
+      if (!me) { location.replace('login.html?next=' + encodeURIComponent('dashboard.html')); return; }
+      const $ = (id) => document.getElementById(id);
+      const BADGE = ['bg-slate-100 text-slate-700', 'bg-amber-100 text-amber-800', 'bg-sky-100 text-sky-800', 'bg-violet-100 text-violet-800', 'bg-emerald-100 text-emerald-800', 'bg-teal-600 text-white'];
+      const TITLES = ['Pesanan Diterima', 'Penimbangan & Penilaian', 'Proses Cuci & Pengeringan', 'Setrika Rapi & Packaging', 'Siap Diambil / Diantar'];
+      const TABS = {
+        beranda: ['Selamat Datang, ' + me + ' 👋', 'Kelola cucian dan pantau status pesananmu di sini.'],
+        status: ['Status Laundry', 'Pantau tahap pengerjaan cucianmu. Diperbarui otomatis.'],
+        riwayat: ['Riwayat Transaksi', 'Semua pesanan yang pernah kamu buat.'],
+        tarif: ['Layanan & Tarif', 'Pilih paket yang sesuai, lalu langsung pesan.'],
+        profil: ['Profil & Alamat', 'Data ini dipakai untuk mengisi formulir pemesanan otomatis.'],
+        bantuan: ['Bantuan CS', 'Pertanyaan umum dan kontak BestWash.'],
+      };
+      const fmt = (iso) => new Date(iso).toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace(',', '') + ' WIB';
+      const fmtD = (iso) => new Date(iso).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+      let showAll = false, first = true;
+
+      document.querySelectorAll('[data-user]').forEach((el) => { el.textContent = me; });
+      document.querySelectorAll('[data-initial]').forEach((el) => { el.textContent = me.charAt(0).toUpperCase(); });
+
+      // ---------- tab ----------
+      function setTab() {
+        let tab = (location.hash || '#beranda').slice(1);
+        if (!TABS[tab]) tab = 'beranda';
+        document.querySelectorAll('[data-panel]').forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== tab));
+        document.querySelectorAll('#nav a').forEach((a) => {
+          const on = a.dataset.tab === tab;
+          ['bg-white', 'text-heading'].forEach((c) => a.classList.toggle(c, on));
+          ['text-white', 'hover:bg-white/20'].forEach((c) => a.classList.toggle(c, !on));
+        });
+        $('judul').textContent = TABS[tab][0]; $('sub').textContent = TABS[tab][1];
+        if (!first) window.scrollTo({ top: 0 });
+        first = false;
+      }
+
+      // ---------- status ----------
+      function step(o, i) {
+        const done = o.status > i, cur = o.status === i, last = i === 4;
+        const desc = (done || cur) ? [fmt(o.createdAt) + ' - Diterima Admin Kasir', 'Berat: ' + o.berat + ' kg (' + rp(o.biaya) + ')', 'Deterjen premium & parfum ' + (o.parfum || '-'), 'Setrika rapi & packaging', o.antar ? 'Diantar kurir BestWash' : 'Siap diambil di gerai BestWash'][i] : 'Belum dimulai';
+        const circle = done ? 'bg-emerald-500 text-white' : cur ? 'bg-brand text-white ring-4 ring-brand/20' : 'bg-slate-100 text-slate-400';
+        const icon = done ? '<path d="M5 12l5 5 9-10"/>' : cur ? '<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>' : '<circle cx="12" cy="12" r="2"/>';
+        return `<li class="relative flex gap-3 ${last ? '' : 'pb-5 after:absolute after:left-[17px] after:top-9 after:h-[calc(100%-2.25rem)] after:w-0.5 after:bg-slate-200'}"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${circle}"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg></span><div class="min-w-0"><p class="text-sm font-bold ${cur ? 'text-heading' : done ? 'text-slate-800' : 'text-slate-400'}">${esc(TITLES[i])}</p><p class="text-xs ${done || cur ? 'text-slate-500' : 'text-slate-400'}">${esc(desc)}</p></div></li>`;
+      }
+      const head = (o) => `<div class="flex items-start justify-between gap-3"><div class="min-w-0"><p class="text-sm font-extrabold text-heading">#${esc(o.id)}</p><p class="text-xs text-slate-500">${esc(o.paket)} · ${o.berat} kg · ${rp(o.total)}</p></div><span class="shrink-0 rounded-full px-3 py-1 text-xs font-bold ${BADGE[o.status]}">${esc(STATUS[o.status])}</span></div>`;
+      const timeline = (o) => `<article class="rounded-2xl border border-slate-200 p-4">${head(o)}<ol class="mt-4 border-t border-slate-100 pt-4">${[0, 1, 2, 3, 4].map((i) => step(o, i)).join('')}</ol></article>`;
+      const empty = (t) => `<p class="rounded-2xl bg-slate-50 p-5 text-center text-sm text-slate-500">${t}</p>`;
+      const mine = () => DB.orders().filter((o) => sameUser(o.user, me)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+      function renderAll() {
+        const all = mine(), active = all.filter((o) => o.status < 5), done = all.filter((o) => o.status === 5);
+        const stat = { proses: all.filter((o) => o.status <= 3).length, siap: all.filter((o) => o.status === 4).length, selesai: done.length, poin: done.reduce((t, o) => t + Math.floor(o.total / 1000), 0) };
+        document.querySelectorAll('[data-stat]').forEach((el) => { el.textContent = stat[el.dataset.stat]; });
+        $('badge-status').textContent = active.length;
+        $('status-mini').innerHTML = active.length ? timeline(active[0]) + (active.length > 1 ? `<p class="mt-3 text-center text-xs font-semibold text-navy">+ ${active.length - 1} pesanan aktif lainnya</p>` : '') : empty('Belum ada cucian aktif. Buat pesanan lewat formulir.');
+        $('status-list').innerHTML = (active.map(timeline).join('') + (showAll ? done.map((o) => `<article class="rounded-2xl border border-slate-100 bg-slate-50 p-4">${head(o)}</article>`).join('') : '')) || empty('Belum ada cucian aktif. Buat pesanan lewat formulir.');
+        $('status-toggle').textContent = showAll ? 'Sembunyikan Pesanan Selesai' : 'Tampilkan Pesanan Selesai' + (done.length ? ' (' + done.length + ')' : '');
+        // riwayat
+        const total = all.reduce((t, o) => t + o.total, 0);
+        $('riwayat-sum').textContent = all.length + ' pesanan · total ' + rp(total);
+        $('riwayat').innerHTML = all.length ? `<table class="w-full min-w-[640px] text-left text-sm"><thead class="border-b border-slate-200 text-xs uppercase tracking-wide text-navy"><tr>${['Tanggal', 'No. Order', 'Layanan', 'Berat', 'Total', 'Status'].map((h) => `<th class="px-3 py-3 font-bold">${h}</th>`).join('')}</tr></thead><tbody class="divide-y divide-slate-100">${all.map((o) => `<tr><td class="px-3 py-3">${fmtD(o.createdAt)}</td><td class="px-3 py-3 font-semibold">${esc(o.id)}</td><td class="px-3 py-3">${esc(o.paket)}</td><td class="px-3 py-3">${o.berat} kg</td><td class="px-3 py-3 font-semibold">${rp(o.total)}</td><td class="px-3 py-3"><span class="inline-block rounded-full px-3 py-1 text-xs font-bold ${BADGE[o.status]}">${esc(STATUS[o.status])}</span></td></tr>`).join('')}</tbody></table>` : empty('Belum ada transaksi.');
+        renderTarif();
+      }
+      function renderTarif() {
+        const items = DB.services().filter((s) => s.aktif);
+        $('tarif-list').innerHTML = items.length ? items.map((s) => `<article class="overflow-hidden rounded-2xl border border-white/60 shadow-md"><div class="bg-white/85 px-6 py-5"><h3 class="text-xl font-bold text-heading">${esc(s.nama)}</h3><p class="mt-1 text-2xl font-bold text-heading">${rp(s.harga)}</p><p class="text-xs font-medium text-navy">/Kg</p></div><ul class="space-y-2 bg-nav px-6 pb-3 pt-5 text-sm font-semibold text-white">${(s.fitur || []).map((f) => `<li class="flex gap-2 before:content-['✓'] before:font-bold">${esc(f)}</li>`).join('')}</ul><div class="bg-nav px-6 pb-5"><button type="button" data-pilih="${esc(s.id)}" class="block w-full rounded-full bg-white py-2 text-center text-sm font-bold text-heading transition hover:bg-aqua focus:outline-none focus-visible:ring-4 focus-visible:ring-white/70">Pesan Paket Ini</button></div></article>`).join('') : '<p class="text-white">Belum ada layanan tersedia.</p>';
+      }
+
+      // ---------- toast ----------
+      function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+      // ---------- profil -> isi otomatis formulir ----------
+      function fillForm() {
+        const p = DB.profile(me);
+        $('nama').value = p.nama || me; $('hp').value = p.hp || ''; $('alamat').value = p.alamat || '';
+      }
+      function fillProfile() {
+        const p = DB.profile(me), c = DB.customers().find((x) => x.username.toLowerCase() === me.toLowerCase());
+        $('p-user').value = me; $('p-nama').value = p.nama || ''; $('p-hp').value = p.hp || ''; $('p-alamat').value = p.alamat || '';
+        $('p-sejak').textContent = c ? 'Anggota sejak ' + fmtD(c.joinedAt) : 'Anggota BestWash';
+      }
+      $('form-profil').addEventListener('submit', (e) => {
+        e.preventDefault();
+        DB.saveProfile(me, { nama: $('p-nama').value.trim(), hp: $('p-hp').value.trim(), alamat: $('p-alamat').value.trim() });
+        fillForm(); toast('Profil dan alamat tersimpan. Formulir pemesanan akan terisi otomatis.');
+      });
+
+      // ---------- formulir pemesanan ----------
+      fillForm(); fillProfile();
+      const paint = initOrderForm($('form-pesan'), {
+        checked: 'peer-checked:border-brand peer-checked:bg-brand/10',
+        onDone: (o) => {
+          $('form-pesan').reset(); fillForm(); paint(); renderAll();
+          location.hash = '#status';
+          toast('Pesanan #' + o.id + ' berhasil dibuat dan masuk ke Status Laundry.');
+        },
+      });
+      function pilihPaket(id) {
+        const r = [...document.querySelectorAll('#form-pesan input[name="paket"]')].find((x) => x.value === id);
+        if (r) { r.checked = true; paint(); }
+        location.hash = '#beranda';
+        setTimeout(() => $('form-pesan').scrollIntoView({ behavior: 'smooth' }), 80);
+      }
+      $('tarif-list').addEventListener('click', (e) => { const b = e.target.closest('[data-pilih]'); if (b) pilihPaket(b.dataset.pilih); });
+      $('btn-baru').addEventListener('click', () => { setTimeout(() => $('form-pesan').scrollIntoView({ behavior: 'smooth' }), 80); });
+      $('status-toggle').addEventListener('click', () => { showAll = !showAll; renderAll(); });
+      $('logout').addEventListener('click', () => { Auth.clear(); location.href = 'landingpage.html'; });
+
+      function applySettings() {
+        const st = DB.settings();
+        document.querySelectorAll('[data-set]').forEach((el) => { if (st[el.dataset.set]) el.textContent = st[el.dataset.set]; });
+        $('wa-link').href = 'https://wa.me/' + st.wa;
+      }
+      const baru = new URLSearchParams(location.search).get('baru');
+      applySettings(); renderAll(); setTab();
+      if (baru) toast('Pesanan #' + baru + ' berhasil dibuat dan masuk ke Status Laundry.');
+      window.addEventListener('hashchange', setTab);
+      watch(() => { renderAll(); applySettings(); });   // status/layanan berubah dari panel admin -> tampil langsung
+    })();
+  </script>
+</body>
+</html>
