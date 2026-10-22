@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const token = otpInput.value.trim();
 
       if (token.length !== 8) {
-        otpError.textContent = "Kode harus 6 digit angka.";
+        otpError.textContent = "Kode harus 8 digit angka.";
         otpError.classList.remove("hidden");
         return;
       }
