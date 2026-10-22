@@ -98,30 +98,29 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       hideAlert();
 
-      if (!SUPABASE_READY) {
-        return showAlert(
-          "Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di supabase-config.js",
-        );
-      }
-
       const username = $("username").value.trim();
       const password = $("password").value;
+
+      // ---- 1) Cek ADMIN dulu (tidak butuh Supabase sama sekali) ----
+      if (
+        username.toLowerCase() === ADMIN_USERNAME &&
+        password === ADMIN_PASSWORD
+      ) {
+        if (supabaseClient) supabaseClient.auth.signOut().catch(() => {}); // buang sesi user lain
+        BestWashAuth.setLocal("admin", "admin");
+        location.href = "admin.html";
+        return;
+      }
+
+      // ---- 2) User biasa wajib lewat Supabase ----
+      if (!SUPABASE_READY) return showAlert(supabaseNotReadyMessage());
+
       const button = loginForm.querySelector('button[type="submit"]');
       setLoading(button, true);
 
       try {
-        // ---- 1) Cek ADMIN dulu ----
-        if (
-          username.toLowerCase() === ADMIN_USERNAME &&
-          password === ADMIN_PASSWORD
-        ) {
-          await supabaseClient.auth.signOut().catch(() => {}); // buang sesi user lain
-          BestWashAuth.setLocal("admin", "admin");
-          location.href = "admin.html";
-          return;
-        }
 
-        // ---- 2) USER BIASA: login lewat Supabase Auth ----
+        // login lewat Supabase Auth
         // Supabase login memakai email, jadi username diubah dulu jadi email
         // lewat fungsi SQL get_email_by_username (dibuat di langkah 4).
         let email = username;
@@ -159,11 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       hideAlert();
 
-      if (!SUPABASE_READY) {
-        return showAlert(
-          "Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di supabase-config.js",
-        );
-      }
+      if (!SUPABASE_READY) return showAlert(supabaseNotReadyMessage());
 
       const username = $("username").value.trim();
       const email = $("email").value.trim();

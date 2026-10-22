@@ -8,27 +8,40 @@
 // =====================================================================
 
 // ---- ISI DUA BARIS INI dari Supabase: Project Settings -> API ----
-const SUPABASE_URL = "sb_secret_u4rdc6tZoBoUPr9OAeJzsw_G6VxJ_V7";
+const SUPABASE_URL = "sb_publishable_GqyX-z5YxeZ3bDh7GLhsIQ_iO4uwg28";
 const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impua21hYW93cmp4ZmVwZGthZGZpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MjYyNzgzOSwiZXhwIjoyMTA4MjAzODM5fQ.3JTN60-fwyRC1C3tMDFM86NIgRD6hT6tM5mrM-XnEvs";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impua21hYW93cmp4ZmVwZGthZGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2Mjc4MzksImV4cCI6MjEwODIwMzgzOX0.YBBOQJN-18s8dPvawPU_c-lECTm4C86P79tmJwAUWpY";
 // Kunci anon/publishable AMAN ditaruh di frontend (keamanan data dijaga RLS).
 // JANGAN PERNAH menaruh kunci "service_role" di sini.
 
-// Penanda: apakah dua baris di atas sudah diisi?
-const SUPABASE_READY =
-  !SUPABASE_URL.includes("GANTI") && !SUPABASE_ANON_KEY.includes("GANTI");
-
-if (!SUPABASE_READY) {
+// PENTING: jangan beri nama variabel "supabase" -> bentrok dengan library CDN.
+let supabaseClient = null;
+try {
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+  );
+} catch (err) {
   console.error(
-    "[BestWash] Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di supabase-config.js",
+    "[BestWash] Library Supabase gagal dimuat (cek internet / ad-blocker):",
+    err,
   );
 }
 
-// PENTING: jangan beri nama variabel "supabase" -> bentrok dengan library CDN.
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY,
-);
+// Penanda: sudah diisi DAN library berhasil dimuat?
+const SUPABASE_READY =
+  !SUPABASE_URL.includes("GANTI") &&
+  !SUPABASE_ANON_KEY.includes("GANTI") &&
+  supabaseClient !== null;
+
+// Pesan yang cocok dengan penyebab ketidaksiapan
+function supabaseNotReadyMessage() {
+  if (supabaseClient === null)
+    return "Library Supabase gagal dimuat. Periksa koneksi internet atau matikan ad-blocker, lalu refresh.";
+  return "Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di supabase-config.js";
+}
+
+if (!SUPABASE_READY) console.error("[BestWash] " + supabaseNotReadyMessage());
 
 // Kunci localStorage ini SAMA dengan yang sudah dipakai dashboard.html & admin.html,
 // jadi kedua halaman itu tetap berjalan tanpa perlu diubah banyak.
